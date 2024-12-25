@@ -33,7 +33,6 @@ const Docs: React.FC = () => {
   });
 
   const solidIframeUrl = useMemo(() => {
-    console.log(`https://tugraph-family.github.io${url}`);
     return `https://tugraph-family.github.io${url}`;
   }, [url]);
 
@@ -46,7 +45,7 @@ const Docs: React.FC = () => {
 
     const handleReceiveMessage = (event: MessageEvent) => {
       if (event?.data?.path) {
-        const formatPath = removePrefixFromPath(event?.data?.path);
+        // const formatPath = removePrefixFromPath(event?.data?.path);
         window.history.pushState(
           {},
           '',
