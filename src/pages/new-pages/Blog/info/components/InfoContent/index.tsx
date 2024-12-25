@@ -5,7 +5,7 @@ import remarkGfm from 'remark-gfm';
 import styles from './index.less';
 import rehypeSlug from 'rehype-slug';
 import rehypeRaw from 'rehype-raw';
-import { historyPushLinkAt, slugify } from '@/util';
+import { historyPushLinkAt, onPathAddSearch, slugify } from '@/util';
 import { history } from 'umi';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 
@@ -50,7 +50,6 @@ const InfoContent = ({ detail }: { detail?: API.BlogDetailVO }) => {
             ),
             code({ node, inline, className, children, ...props }) {
               const match = /language-(\w+)/.exec(className || '');
-              console.log(match, 'lkm');
               return !inline && match ? (
                 <SyntaxHighlighter
                   {...props}
@@ -76,7 +75,7 @@ const InfoContent = ({ detail }: { detail?: API.BlogDetailVO }) => {
             className={styles.lastBtn}
             onClick={() =>
               history.push(
-                historyPushLinkAt(`/blog/info/${detail?.lastCommentId}`),
+                onPathAddSearch('/blog/info', { id: detail?.lastCommentId }),
               )
             }
           >
@@ -91,7 +90,7 @@ const InfoContent = ({ detail }: { detail?: API.BlogDetailVO }) => {
             className={styles.nextBtn}
             onClick={() =>
               history.push(
-                historyPushLinkAt(`/blog/info/${detail?.nextCommentId}`),
+                onPathAddSearch('/blog/info', { id: detail?.nextCommentId }),
               )
             }
           >

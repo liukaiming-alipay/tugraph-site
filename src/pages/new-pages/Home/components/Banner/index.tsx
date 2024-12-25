@@ -5,7 +5,7 @@ import FadeInSection from '@/components/FadeInSection';
 import MainButton from '@/components/MainButton';
 import { IntlShape } from 'react-intl';
 import { useLocation, history } from 'umi';
-import { getSearch, historyPushLinkAt } from '@/util';
+import { getSearch, historyPushLinkAt, onPathAddSearch } from '@/util';
 import { DEFAULT_LOCAL } from '@/constant';
 import { useMemo } from 'react';
 import { CARD_LIST } from '@/pages/new-pages/Home/constants';
@@ -84,7 +84,7 @@ const Banner = ({
                 drag
                 dragSnapToOrigin
                 onClick={() =>
-                  history.push(historyPushLinkAt(`/blog/info/${item.id}`))
+                  history.push(onPathAddSearch('/blog/info', { id: item.id }))
                 }
               >
                 <img src={item.bgImg} alt="" className={styles.featureImg} />

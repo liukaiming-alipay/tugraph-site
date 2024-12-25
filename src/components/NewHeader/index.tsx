@@ -3,7 +3,12 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { history, isBrowser, useIntl, useLocation } from 'umi';
 import cx from 'classnames';
 import { DEFAULT_LOCAL } from '@/constant';
-import { getSearch, goLinkAt, historyPushLinkAt } from '@/util';
+import {
+  getSearch,
+  goLinkAt,
+  historyPushLinkAt,
+  onPathAddSearch,
+} from '@/util';
 import '@docsearch/css';
 import styles from './index.less';
 import { motion } from 'framer-motion';
@@ -16,7 +21,7 @@ export const NewHeader = ({
 }) => {
   let time: any = null;
   const intl = useIntl();
-  const { pathname, search, hash } = useLocation();
+  const { pathname, search } = useLocation();
   const lang = getSearch(search)?.lang || DEFAULT_LOCAL;
   const [subVisibleKey, setSubVisibleKey] = useState('');
   const [show, setShow] = useState(true);
@@ -46,9 +51,21 @@ export const NewHeader = ({
     return format;
   };
 
-  const zhSite = `${window.location.origin}${history?.location?.pathname}?lang=zh-CN`;
+  const zhSite = onPathAddSearch(
+    `${window.location.origin}${history?.location?.pathname}`,
+    {
+      ...getSearch(search),
+      lang: 'zh-CN',
+    },
+  );
 
-  const enSite = `${window.location.origin}${history?.location?.pathname}?lang=en-US`;
+  const enSite = onPathAddSearch(
+    `${window.location.origin}${history?.location?.pathname}`,
+    {
+      ...getSearch(search),
+      lang: 'en-US',
+    },
+  );
   const getCurrentLanguage = () => {
     return lang === 'en-US' ? 'en' : 'zh';
   };
@@ -103,14 +120,18 @@ export const NewHeader = ({
           {
             label: intl.formatMessage({ id: 'header.product.desc1' }),
             desc: intl.formatMessage({ id: 'home.version0.desc' }),
-            productPath: '/product/db',
-            docPath: `/docs/tugraph-db/${getCurrentLanguage()}/4.5.1/guide`,
+            productPath: onPathAddSearch('/product', { type: 'db' }),
+            docPath: onPathAddSearch('/docs', {
+              url: `/tugraph-db/${getCurrentLanguage()}/4.5.1/guide`,
+            }),
           },
           {
             label: intl.formatMessage({ id: 'header.product.desc2' }),
             desc: intl.formatMessage({ id: 'product_analytics.description' }),
-            productPath: '/product/analytics',
-            docPath: `/docs/tugraph-analytics/${getCurrentLanguage()}/guide/`,
+            productPath: onPathAddSearch('/product', { type: 'analytics' }),
+            docPath: onPathAddSearch('/docs', {
+              url: `/tugraph-analytics/${getCurrentLanguage()}/guide`,
+            }),
           },
           // {
           //   label: intl.formatMessage({ id: 'header.product.desc3' }),
@@ -129,12 +150,12 @@ export const NewHeader = ({
           {
             label: intl.formatMessage({ id: 'header.product.desc4' }),
             desc: intl.formatMessage({ id: 'product_enterprise.description' }),
-            productPath: '/product/enterprise',
+            productPath: onPathAddSearch('/product', { type: 'enterprise' }),
           },
           {
             label: intl.formatMessage({ id: 'header.product.desc5' }),
             desc: intl.formatMessage({ id: 'product_clound.description' }),
-            productPath: '/product/clound',
+            productPath: onPathAddSearch('/product', { type: 'clound' }),
           },
         ],
       });
@@ -152,9 +173,7 @@ export const NewHeader = ({
                     className={styles.productSubMenuItem}
                     onClick={() => {
                       history.push(
-                        historyPushLinkAt(
-                          isDoc ? subItem.docPath : subItem.productPath,
-                        ),
+                        isDoc ? subItem.docPath : subItem.productPath,
                       );
                       setShow(false);
                       time = setTimeout(() => {
@@ -289,15 +308,13 @@ export const NewHeader = ({
       return;
     }
     if (currentUrl) {
-      window.location.href = /\/en\//.test(window.location.pathname)
-        ? `${window.location.origin}${toggleLanguage(
-            window.location.pathname,
-            'zh',
-          )}?lang=zh-CN${window.location.hash}`
-        : `${window.location.origin}${toggleLanguage(
-            window.location.pathname,
-            'en',
-          )}?lang=en-US${window.location.hash}`;
+      const isEN = /\/en\//.test(pathname);
+      const url = onPathAddSearch(`${window.location.origin}${pathname}`, {
+        ...getSearch(search),
+        lang: isEN ? 'zh-CN' : 'en-US',
+        url: toggleLanguage(getSearch(search).url, isEN ? 'zh' : 'en'),
+      });
+      window.location.href = url;
     } else {
       window.location.href = lang === 'zh-CN' ? enSite : zhSite;
     }
@@ -314,7 +331,7 @@ export const NewHeader = ({
         label: intl.formatMessage({ id: 'header.product' }),
         onMouseMove: () => onHover('subMenuProduct', 'move'),
         onMouseLeave: () => onHover('subMenuProduct', 'leave'),
-        path: '/product/db',
+        path: onPathAddSearch('/product', { type: 'db' }),
         subKey: 'subMenuProduct',
       },
       {
@@ -332,7 +349,9 @@ export const NewHeader = ({
         label: intl.formatMessage({ id: 'header.doc' }),
         onMouseMove: () => onHover('subMenuDocs', 'move'),
         onMouseLeave: () => onHover('subMenuDocs', 'leave'),
-        path: `/docs/tugraph-db/${getCurrentLanguage()}/4.5.1/guide`,
+        path: onPathAddSearch('/docs', {
+          url: `/tugraph-db/${getCurrentLanguage()}/4.5.1/guide`,
+        }),
         subKey: 'subMenuDocs',
       },
 
@@ -366,7 +385,10 @@ export const NewHeader = ({
               )}
               onClick={() => {
                 if (path) {
-                  history.push(historyPushLinkAt(path));
+                  const url = ['docs', 'product'].includes(key)
+                    ? path
+                    : historyPushLinkAt(path);
+                  history.push(url);
                 }
               }}
               {...props}

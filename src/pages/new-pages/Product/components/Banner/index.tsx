@@ -4,7 +4,7 @@ import JoLPlayer from '@/components/Player';
 import FadeInSection from '@/components/FadeInSection';
 import { IntlShape } from 'react-intl';
 import MainButton from '@/components/MainButton';
-import { getSearch, historyPushLinkAt } from '@/util';
+import { getSearch, historyPushLinkAt, onPathAddSearch } from '@/util';
 import { history, useLocation } from 'umi';
 import Title from 'antd/lib/skeleton/Title';
 import { DEFAULT_LOCAL } from '@/constant';
@@ -43,9 +43,9 @@ const Banner = ({ type, intl }: IBannerProps) => {
               className={styles.enterpriseConsultationButton}
               onClick={() => {
                 history.push(
-                  historyPushLinkAt(
-                    `/docs/tugraph-db/${getCurrentLanguage()}/4.5.1/guide`,
-                  ),
+                  onPathAddSearch('/docs', {
+                    url: `/tugraph-db/${getCurrentLanguage()}/4.5.1/guide`,
+                  }),
                 );
               }}
             >
@@ -74,9 +74,9 @@ const Banner = ({ type, intl }: IBannerProps) => {
               className={styles.enterpriseConsultationButton}
               onClick={() => {
                 history.push(
-                  historyPushLinkAt(
-                    `/docs/tugraph-analytics/${getCurrentLanguage()}/guide/`,
-                  ),
+                  onPathAddSearch('/docs', {
+                    url: `/tugraph-analytics/${getCurrentLanguage()}/guide`,
+                  }),
                 );
               }}
             >
@@ -105,9 +105,9 @@ const Banner = ({ type, intl }: IBannerProps) => {
               className={styles.enterpriseConsultationButton}
               onClick={() => {
                 history.push(
-                  historyPushLinkAt(
-                    `/docs/tugraph-db/${getCurrentLanguage()}/4.5.1/olap&procedure/learn/tutorial`,
-                  ),
+                  onPathAddSearch('/docs', {
+                    url: `/tugraph-db/${getCurrentLanguage()}/4.5.1/olap&procedure/learn/tutorial`,
+                  }),
                 );
               }}
             >

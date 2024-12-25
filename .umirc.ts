@@ -65,7 +65,7 @@ export default defineConfig({
       component: '@/pages/new-pages/Home',
     },
     {
-      path: '/product/*',
+      path: '/product',
       component: '@/pages/new-pages/Product',
       title: 'product.title',
     },
@@ -84,11 +84,6 @@ export default defineConfig({
       title: 'docs.title',
     },
     {
-      path: '/docs/*',
-      component: '@/pages/new-pages/Docs',
-      title: 'docs.title',
-    },
-    {
       path: '/download',
       component: '@/pages/new-pages/Download',
       title: 'download.title',
@@ -99,7 +94,7 @@ export default defineConfig({
       title: 'blog.title',
     },
     {
-      path: '/blog/info/*',
+      path: '/blog/info',
       component: '@/pages/new-pages/Blog/info',
     },
     {
@@ -107,7 +102,7 @@ export default defineConfig({
       component: '@/pages/new-pages/Activity/list',
     },
     {
-      path: '/activity/info/*',
+      path: '/activity/info',
       component: '@/pages/new-pages/Activity/info',
     },
   ],

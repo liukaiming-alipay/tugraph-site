@@ -4,7 +4,7 @@ import { SubTitle } from '@/components/SubTitle';
 import FadeInSection from '@/components/FadeInSection';
 import { IntlShape } from 'react-intl';
 import { history, useLocation } from 'umi';
-import { getSearch, historyPushLinkAt } from '@/util';
+import { getSearch, historyPushLinkAt, onPathAddSearch } from '@/util';
 import { getSteps } from '@/pages/new-pages/Product/constants/data';
 
 const QuickStart = ({ intl }: { intl: IntlShape }) => {
@@ -45,9 +45,9 @@ const QuickStart = ({ intl }: { intl: IntlShape }) => {
             className={styles.startGuideButton}
             onClick={() => {
               history.push(
-                historyPushLinkAt(
-                  `/docs/tugraph-db/${getLang()}/4.5.1/quick-start/preparation`,
-                ),
+                onPathAddSearch('/docs', {
+                  url: `/tugraph-db/${getLang()}/4.5.1/quick-start/preparation`,
+                }),
               );
             }}
           >

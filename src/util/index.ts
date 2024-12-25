@@ -36,12 +36,15 @@ export const goLinkAt = (path: string) => {
 export const historyPushLinkAt = (path: string) => {
   const { search, pathname } = window.location;
   let curSearch = getSearch(search);
+
   if (/^\/docs\//.test(pathname)) {
     return `${path}?lang=${
       pathname.split('/')[3] === 'en' ? 'en-US' : 'zh-CN'
     }`;
   } else {
-    return `${path}?lang=${curSearch?.lang || DEFAULT_LOCAL}`;
+    return `${path}${path?.split('?')[1] ? '&' : '?'}${
+      curSearch?.lang === 'en-US' ? 'lang=en-US' : ''
+    }`;
   }
 };
 
@@ -77,4 +80,24 @@ export const slugify = (text?: string, islabel = false) => {
     .replace(/[^a-z0-9\u4e00-\u9fa5 -]/g, '') // Remove all non-word chars
     .replace(/\s+/g, '-') // Replace spaces with -
     .replace(/-+/g, '-'); // Replace multiple - with single -
+};
+
+export const objectToQueryString = (obj: Record<string, any>): string => {
+  return Object.keys(obj)
+    ?.filter((key) => obj[key])
+    .map((key) => `${key}=${obj[key]}`)
+    .join('&');
+};
+
+export const onPathAddSearch = (
+  path: string,
+  addSearch: Record<string, any>,
+) => {
+  const { search } = window.location;
+  const curSearch = {
+    lang: getSearch(search)?.lang || '',
+    ...addSearch,
+  };
+
+  return `${path}?${objectToQueryString(curSearch)}`;
 };

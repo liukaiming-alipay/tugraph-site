@@ -6,11 +6,11 @@ import { useLocation } from 'umi';
 import { useBlog } from '@/hooks/useBlog';
 import { useEffect } from 'react';
 import { Spin } from 'antd';
-import { tracertBPos } from '@/util';
+import { getSearch, tracertBPos } from '@/util';
 
 const BlogInfo = () => {
   const location = useLocation();
-  const id = Number(location.pathname.split('/')[3]);
+  const id = Number(getSearch(location.search)?.id);
 
   const { getDetail, getList, detail, list, getDetailLoading } = useBlog();
 

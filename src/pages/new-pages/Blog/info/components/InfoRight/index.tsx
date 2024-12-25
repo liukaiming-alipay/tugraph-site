@@ -3,7 +3,7 @@ import { useEffect, useMemo } from 'react';
 import { remark } from 'remark';
 import parse from 'remark-parse';
 import styles from './index.less';
-import { historyPushLinkAt, slugify } from '@/util';
+import { onPathAddSearch, slugify } from '@/util';
 import { history } from 'umi';
 import { useActivity } from '@/hooks/useActivity';
 
@@ -101,7 +101,7 @@ const InfoRight = ({
               key={item?.id}
               className={styles.newestItem}
               onClick={() =>
-                history.push(historyPushLinkAt(`/blog/info/${item.id}`))
+                history.push(onPathAddSearch('/blog/info', { id: item.id }))
               }
             >
               {item.title}
@@ -115,7 +115,7 @@ const InfoRight = ({
           backgroundImage: `url(${lastDetial?.backgroundImage?.url})`,
         }}
         onClick={() =>
-          history.push(historyPushLinkAt('/activity/info/' + lastDetial?.id))
+          onPathAddSearch('/activity/info/', { id: lastDetial?.id })
         }
       ></div>
     </div>

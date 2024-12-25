@@ -5,10 +5,9 @@ import styles from './index.less';
 import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { ActivityWayOptionsEnum } from '@/constant';
-import { historyPushLinkAt } from '@/util';
+import { onPathAddSearch } from '@/util';
 import { useEffect, useState } from 'react';
 import { useActivity } from '@/hooks/useActivity';
-import ActivityTag from '@/pages/new-pages/Activity/components/ActivityTag';
 import { ACTIVITY_STATE_ENUM } from '@/pages/new-pages/Activity/constants';
 
 const Banner = () => {
@@ -87,7 +86,7 @@ const Banner = () => {
             <div
               onClick={() =>
                 history.push(
-                  historyPushLinkAt('/activity/info/' + lastDetial?.id),
+                  onPathAddSearch('/activity/info/', { id: lastDetial?.id }),
                 )
               }
               className={styles.activityBtn}
@@ -216,7 +215,9 @@ const Banner = () => {
                     <Button
                       onClick={() =>
                         history.push(
-                          historyPushLinkAt('/activity/info/' + lastDetial?.id),
+                          onPathAddSearch('/activity/info/', {
+                            id: lastDetial?.id,
+                          }),
                         )
                       }
                       className={cx(styles.mainBtn)}

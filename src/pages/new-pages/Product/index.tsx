@@ -4,7 +4,7 @@ import Banner from '@/pages/new-pages/Product/components/Banner';
 import Introduction from '@/pages/new-pages/Product/components/Introduction';
 import QuickStart from '@/pages/new-pages/Product/components/QuicklyStart';
 import UserDemo from '@/pages/new-pages/Product/components/UserDemo';
-import { tracertBPos } from '@/util';
+import { getSearch, tracertBPos } from '@/util';
 import { useEffect } from 'react';
 import { useIntl, useLocation } from 'umi';
 
@@ -12,7 +12,7 @@ const Product = () => {
   const { pathname } = useLocation();
   const intl = useIntl();
 
-  const type = pathname.split('/')[2];
+  const type = getSearch(location.search)?.type;
 
   useEffect(() => {
     switch (type) {

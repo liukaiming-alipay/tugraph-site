@@ -1,4 +1,4 @@
-import { historyPushLinkAt } from '@/util';
+import { historyPushLinkAt, onPathAddSearch } from '@/util';
 import styles from './index.less';
 import { history } from 'umi';
 import FooterInfo from '@/pages/new-pages/Blog/list/components/FooterInfo';
@@ -13,7 +13,9 @@ const BlogItem = ({
   return (
     <div
       className={styles.blogItem}
-      onClick={() => history.push(historyPushLinkAt(`/blog/info/${detail.id}`))}
+      onClick={() =>
+        history.push(onPathAddSearch('/blog/info', { id: detail.id }))
+      }
       style={isVisibleBoreder ? { borderBottom: 'none' } : {}}
     >
       <div className={styles.blogItemImg}>
